@@ -1,0 +1,56 @@
+{% extends 'base.html' %} {% block title %} Home {% endblock %} {% block content
+%}
+<div class="wallet-container">
+
+  <div style="display: flex; flex-direction: row; align-items: center;">
+    <h1 style="margin-left: 3cm;">Create New Address</h1>
+    <button id="createAddressButton"
+      style="background-color: #ffffff; font-size: 1.5em; color: #000000; padding: 10px; border: none; border-radius: 4px; margin-left: 20px; margin-top: 35px; ">
+      Create Address
+    </button>
+  </div>
+  <br>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <div id="addressInfo" style="margin-left: 2cm; margin-top: 30px; font-size: 1.2em;"></div>
+  </div>
+
+
+
+  <h1>Send Bitcoin</h1>
+
+  <form action="#" id="form" method="post">
+    <label for="from">From Address:</label><br />
+    <input type="text" id="from" name="fromAddress" /><br />
+    <label for="to">To Address:</label><br />
+    <input type="text" id="to" name="toAddress" /><br /><br />
+    <label for="amount">Amount:</label><br />
+    <input type="number" id="amount" name="Amount" /><br /><br />
+    <span> {{ message }} </span> <br />
+    <input type="submit" value="Send" />
+  </form>
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var createAddressButton = document.getElementById("createAddressButton");
+    var addressInfoDiv = document.getElementById("addressInfo");
+
+    createAddressButton.addEventListener("click", function () {
+      fetch("/createAddress")
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          var addressInfo = data.addressInfo;
+          addressInfoDiv.innerHTML =
+            "Public Address: " + addressInfo.publicAddress;
+        })
+        .catch(function (error) {
+          addressInfoDiv.innerHTML = "Failed to create address.";
+        });
+    });
+  });
+</script>
+
+{% endblock%}
